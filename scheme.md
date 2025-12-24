@@ -15,21 +15,27 @@
     Comprehensive gene information including sequences, functions, and literature references.
 ### [Ensembl](https://www.ensembl.org/index.html)
     Genome browser providing detailed gene annotations, variants, and comparative genomics data.
-# What we should do
-1. **What disease are we going to study? Is it Mendelian or not?** (We can only pick one)
-2. **What DNN should we use**: MLP(x, too simple), CNN, GNN(hard, requires biological prerequisites, see [this article](https://pmc.ncbi.nlm.nih.gov/articles/PMC10296901/?f_link_type=f_linkinlinenote&flow_extra=eyJkb2NfcG9zaXRpb24iOjAsImRvY19pZCI6IjE0ZGRmZTEzNjYwZTgxNTItNmZiNzNkZmI3NDE3ODg2YyIsImlubGluZV9kaXNwbGF5X3Bvc2l0aW9uIjowfQ%3D%3D))
-3. Use database above to search for the disease to find list of associated genes with high evidence scores. You should also check whether it has **multiple supporting publications**. We may:
-   - Check OMIM for Mendelian forms(单基因型) of the disease ( If the disease is Mendelian)
-   - Use GWAS Catalog to find SNPs linked to the disease and map them to candidate genes
-   - 
-4. When preprossessing the data, we must:
-   - **Process SNPs**: Map SNPs to genes using reference genome
-   - **Data Balancing**: Use SMOTE or ADASYN to address class imbalance
-   - **Feature Scaling**: Apply Min-Max scaling or Standardization to features
-   - **Normalization**: Normalize gene expression data using log transformation or z-score normalization
+
   
-5. When training the DNN, we **must** adopt:
-   - **Stratified k-fold cross-validation**: Ensures equal representation of classes in each fold
-   - **Evaluation metrics**: Use AUC-ROC, precision-recall curve, accuracy, F1-score
-   - **Early stopping**: Prevent overfitting by monitoring validation loss
-   - **Regularization**: Apply L2 regularization or batch normalization
+# 初步模型结构
+主要以Graph Convolution Neural Network为主，时间最充裕的情况可以对比一下两种encoder和两种decoder的不同组合，最不充裕的情况
+
+Encoder：
+    - 2-layer GCN (See `Literature_Study/PGCN.pdf`)，那里@sbx对data preprocessing和模型结构有比较详细的描述，并且比原论文好读。
+    - 9-block $\times$ 3-layer GCN + 9 $\times$ residual connection (See `Proj_Related_Papers/DGHNN.pdf`和`Proj_Related_Papers/DGHNN_Supp.docx`)，这篇论文很短并且好多之前已经总结过了，所以@sbx没有做总结，不用管其中hypergraph的部分
+  
+Decoder:
+    - TF-Transformer (See `Proj_Related_Papers/DGHNN.pdf`和`Proj_Related_Papers/DGHNN_Supp.docx`)
+    - 1-layer GCN  (See `Literature_Study/PGCN.pdf`)
+  
+**建议组合是**`Proj_Related_Papers/DGHNN.pdf`和`Proj_Related_Papers/DGHNN_Supp.docx`提出的结构，因为这篇文章是2025年的，@sbx没有整理是因为没时间了，但是它比较新，并且看上去效果也不错。代码方面可以参考
+
+Baseline Choices: 
+    - DBN (See `Literature_Study/RBM_DBN.pdf`)，这个可以@sbx来写，不是传统的机器学习/network方法，是深度学习方法，但是也比较老了，应该可以作baseline
+    - Traditional ML/Network methods: **欢迎补充**
+  
+# 目前最急需做的事
+1. **确定上述模型选择**
+2. 数据集的选择/大小/类型，因为@sbx认为他总结到的两篇文章的data都是异质的，不是很好获取和融合，所以需要尽快
+3. 根据获得的数据确定**Data Preprocessing**的方法，因为@sbx认为他总结到的两篇文章的预处理方法都不简单。没有预处理得到的输入数据格式，代码都写不了。
+   

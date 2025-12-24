@@ -128,13 +128,16 @@ Where $\text{sp}(g_1, g_2)$ is the shortest path between gene $g_1$ and $g_2$ in
 
 **GO raw database**: For a gene, there are a set of **GO terms** that are related to it. The database is a DAG where nodes are terms, e.g. "cell division" and edges are semantic relationships between terms, e.g. "is_a", "part_of".
 
-**Successor graph of a term**: $\text{DAG}_A = (T_A, E_A)$ where $T_A$ is the set of all successor terms of term $A$ (including $A$ itself) and $E_A$ is the set of edges among terms in $T_A$, where we define **$S$-values**:
+**Successor graph of a term**: $\text{DAG}_A = (T_A, E_A)$ where $T_A$ is the set of all **ancestor** terms of term $A$ (including $A$ itself) and $E_A$ is the set of edges among terms in $T_A$, where we define **$S$-values**:
 \[S_A(t) = 
 \begin{cases}
 1 & t = A \\
 \max\{w_e(t,t^\prime) \cdot S_A(t^\prime) \mid t^\prime \in \text{children of } t\} & t \neq A
 \end{cases}\]
-Note we need to distinguish between **children** and **successors** here. Children are the direct descendants while successors include all descendants.
+
+By this recursion we can derive $S_A$ from $A$ to the root.
+
+> Note we need to distinguish between **children** and **successors** here. Children are the direct descendants while successors include all descendants.
 
 where $w_e$ is the weight of edge (manually defined for each semantic)
 
