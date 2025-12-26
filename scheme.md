@@ -3,9 +3,11 @@
     Contains 2+ million gene-disease associasions, provides evidence scores and literature support for each association.
 
     You need to create a free account to download data.
+    #free account不支持下载全部数据，有什么办法爬吗？
 ## [OMIM](https://www.omim.org/)
     Focuses on Mendelian disorders with detailed phenotypic descriptions.
     Contains 15000+ entries with well established gene-disease relationships.
+    #只支持机构邮箱，@llz的清华邮箱无法通过验证。database-1的两个MIM数据是通过Ensembl下载的，但Ensembl没有疾病关联度打分
 ## [GWAS Catalog](https://www.ebi.ac.uk/gwas/)
     Contains 4000+ published genome-wide association studies.
     Focuses on complex diseases and traits with SNP-level associations.
